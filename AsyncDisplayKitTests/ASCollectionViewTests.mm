@@ -636,7 +636,7 @@
   XCTAssertNil([cv nodeForItemAtIndexPath:indexPath]);
 }
 
-- (void)testThatSupplementaryNodeAtIndexPathIsCorrectImmediatelyAfterSubmittingUpdate
+- (void)DISABLED_testThatSupplementaryNodeAtIndexPathIsCorrectImmediatelyAfterSubmittingUpdate
 {
   updateValidationTestPrologue
   NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
