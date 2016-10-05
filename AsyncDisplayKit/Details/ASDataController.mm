@@ -189,7 +189,7 @@ NSString * const ASDataControllerRowNodeKind = @"_ASDataControllerRowNodeKind";
 
     // Allocate the node.
     ASIndexedNodeContext *context = contexts[i];
-    ASCellNode *node = [context allocateNode];
+    ASCellNode *node = context.node;
     if (node == nil) {
       ASDisplayNodeAssertNotNil(node, @"Node block created nil node; %@, %@", self, self.dataSource);
       node = [[ASCellNode alloc] init]; // Fallback to avoid crash for production apps.

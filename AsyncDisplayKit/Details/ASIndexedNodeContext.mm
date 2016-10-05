@@ -13,6 +13,7 @@
 #import "ASIndexedNodeContext.h"
 #import "ASEnvironmentInternal.h"
 #import "ASCellNode.h"
+#import <mutex>
 
 @interface ASIndexedNodeContext ()
 
@@ -21,7 +22,10 @@
 
 @end
 
-@implementation ASIndexedNodeContext
+@implementation ASIndexedNodeContext {
+  std::mutex _lock;
+  ASCellNode *_node;
+}
 
 - (instancetype)initWithNodeBlock:(ASCellNodeBlock)nodeBlock
                         indexPath:(NSIndexPath *)indexPath
@@ -39,13 +43,22 @@
   return self;
 }
 
-- (ASCellNode *)allocateNode
+- (ASCellNode *)node
 {
-  NSAssert(_nodeBlock != nil, @"Node block is gone. Should not execute it more than once");
-  ASCellNode *node = _nodeBlock();
-  _nodeBlock = nil;
-  ASEnvironmentStatePropagateDown(node, _environmentTraitCollection);
-  return node;
+  std::lock_guard<std::mutex> l(_lock);
+  if (_nodeBlock != nil) {
+    ASCellNode *node = _nodeBlock();
+    ASEnvironmentStatePropagateDown(node, _environmentTraitCollection);
+    _node = node;
+    _nodeBlock = nil;
+  }
+  return _node;
+}
+
+- (ASCellNode *)nodeIfAllocated
+{
+  std::lock_guard<std::mutex> l(_lock);
+  return _node;
 }
 
 + (NSArray<NSIndexPath *> *)indexPathsFromContexts:(NSArray<ASIndexedNodeContext *> *)contexts
