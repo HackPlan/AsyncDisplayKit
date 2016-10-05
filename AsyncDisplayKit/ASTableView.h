@@ -272,13 +272,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 
 /**
- * Similar to -cellForRowAtIndexPath:.
+ * Retrieves the node for the row at the given index path, in the data source's index space.
  * 
  * @param indexPath The index path of the requested node.
- *
- * @return a node for display at this indexpath.
  */
 - (nullable ASCellNode *)nodeForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ * Retrieves the node for the row at the given index path, in UITableView's index space.
+ *
+ * @param indexPath The index path of the requested node.
+ */
+- (nullable ASCellNode *)nodeForRowAtCompletedIndexPath:(NSIndexPath *)indexPath;
 
 /**
  * Similar to -indexPathForCell:.

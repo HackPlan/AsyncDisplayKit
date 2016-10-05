@@ -181,6 +181,8 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 
 - (nullable ASCellNode *)nodeAtIndexPath:(NSIndexPath *)indexPath;
 
+- (nullable ASCellNode *)nodeAtCompletedIndexPath:(NSIndexPath *)indexPath;
+
 /**
  * @return The index path, in the data source's index space, for the given node.
  */

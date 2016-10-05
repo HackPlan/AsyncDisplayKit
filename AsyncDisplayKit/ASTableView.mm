@@ -414,6 +414,11 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
   return [_dataController nodeAtIndexPath:indexPath];
 }
 
+- (ASCellNode *)nodeForRowAtCompletedIndexPath:(NSIndexPath *)indexPath
+{
+  return [_dataController nodeAtCompletedIndexPath:indexPath];
+}
+
 - (NSIndexPath *)indexPathForNode:(ASCellNode *)cellNode
 {
   return [_dataController indexPathForNode:cellNode];

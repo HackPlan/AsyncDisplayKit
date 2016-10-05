@@ -915,6 +915,25 @@ NSString * const ASDataControllerRowNodeKind = @"_ASDataControllerRowNodeKind";
   return context.node;
 }
 
+- (ASCellNode *)nodeAtCompletedIndexPath:(NSIndexPath *)indexPath
+{
+  ASDisplayNodeAssertMainThread();
+
+  NSArray *completedNodes = [self completedNodes];
+  NSInteger section = indexPath.section;
+  NSInteger row = indexPath.row;
+  ASCellNode *node = nil;
+
+  if (section >= 0 && row >= 0 && section < completedNodes.count) {
+    NSArray *completedNodesSection = completedNodes[section];
+    if (row < completedNodesSection.count) {
+      node = completedNodesSection[row];
+    }
+  }
+
+  return node;
+}
+
 - (NSIndexPath *)indexPathForNode:(ASCellNode *)cellNode;
 {
   ASDisplayNodeAssertMainThread();

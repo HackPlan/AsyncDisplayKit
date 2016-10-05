@@ -276,14 +276,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 
 /**
- * Similar to -cellForItemAtIndexPath:.
+ * Retrieves the node for the row at the given index path, in the data source's index space.
  *
  * @param indexPath The index path of the requested node.
- *
- * @return a node for display at this indexpath or nil
  */
 - (nullable ASCellNode *)nodeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ * Retrieves the node for the item at the given index path, in UICollectionView's index space.
+ *
+ * @param indexPath The index path of the requested node.
+ */
+- (nullable ASCellNode *)nodeForItemAtCompletedIndexPath:(NSIndexPath *)indexPath;
 
 /**
  * Similar to -supplementaryViewForElementKind:atIndexPath:
@@ -315,13 +319,6 @@ NS_ASSUME_NONNULL_BEGIN
  * @return an array containing the nodes being displayed on screen.
  */
 - (NSArray<ASCellNode *> *)visibleNodes;
-
-/**
- * Query the sized node at `indexPath` for its calculatedSize.
- *
- * @param indexPath The index path for the node of interest.
- */
-- (CGSize)calculatedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  * Determines collection view's current scroll direction. Supports 2-axis collection views.
@@ -360,6 +357,19 @@ NS_ASSUME_NONNULL_BEGIN
  * its flow layout behaves predictably and does not log undefined layout warnings.
  */
 @property (nonatomic) BOOL zeroContentInsets;
+
+@end
+
+@interface ASCollectionView (Deprecated)
+
+/**
+ * Query the sized node at `indexPath` for its calculatedSize.
+ *
+ * @param indexPath The index path for the node of interest.
+ *
+ * @deprecated Call @c calculatedSize for the node of interest instead.
+ */
+- (CGSize)calculatedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath ASDISPLAYNODE_DEPRECATED;
 
 @end
 
