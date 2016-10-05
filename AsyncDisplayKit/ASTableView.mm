@@ -640,7 +640,7 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
   _ASTableViewCell *cell = [self dequeueReusableCellWithIdentifier:kCellReuseIdentifier forIndexPath:indexPath];
   cell.delegate = self;
 
-  ASCellNode *node = [_dataController nodeAtIndexPath:indexPath];
+  ASCellNode *node = [_dataController nodeAtCompletedIndexPath:indexPath];
   if (node) {
     [_rangeController configureContentView:cell.contentView forCellNode:node];
 

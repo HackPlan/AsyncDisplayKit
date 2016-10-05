@@ -656,7 +656,7 @@ static NSString * const kCellReuseIdentifier = @"_ASCollectionViewCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  return [[_dataController nodeAtIndexPath:indexPath] calculatedSize];
+  return [[_dataController nodeAtCompletedIndexPath:indexPath] calculatedSize];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -675,7 +675,7 @@ static NSString * const kCellReuseIdentifier = @"_ASCollectionViewCell";
 {
   _ASCollectionViewCell *cell = [self dequeueReusableCellWithReuseIdentifier:kCellReuseIdentifier forIndexPath:indexPath];
   
-  ASCellNode *node = [_dataController nodeAtIndexPath:indexPath];
+  ASCellNode *node = [_dataController nodeAtCompletedIndexPath:indexPath];
   cell.node = node;
   [_rangeController configureContentView:cell.contentView forCellNode:node];
   
@@ -1088,7 +1088,7 @@ static NSString * const kCellReuseIdentifier = @"_ASCollectionViewCell";
 
 - (ASDisplayNode *)rangeController:(ASRangeController *)rangeController nodeAtIndexPath:(NSIndexPath *)indexPath
 {
-  return [_dataController nodeAtIndexPath:indexPath];
+  return [_dataController nodeAtCompletedIndexPath:indexPath];
 }
 
 - (NSString *)nameForRangeControllerDataSource
