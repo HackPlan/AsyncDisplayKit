@@ -367,7 +367,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param indexPath The index path for the node of interest.
  *
- * @deprecated Call @c calculatedSize for the node of interest instead.
+ * @deprecated Call @c calculatedSize on the node of interest instead.
  */
 - (CGSize)calculatedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath ASDISPLAYNODE_DEPRECATED;
 
