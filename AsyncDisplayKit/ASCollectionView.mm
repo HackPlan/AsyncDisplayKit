@@ -1227,19 +1227,19 @@ static NSString * const kCellReuseIdentifier = @"_ASCollectionViewCell";
 #pragma mark - ASCellNodeDelegate
 - (void)nodeSelectedStateDidChange:(ASCellNode *)node
 {
-  NSIndexPath *indexPath = [self indexPathForNode:node];
+  NSIndexPath *indexPath = [_dataController completedIndexPathForNode:node];
   if (indexPath) {
     if (node.isSelected) {
-      [self selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+      [super selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     } else {
-      [self deselectItemAtIndexPath:indexPath animated:NO];
+      [super deselectItemAtIndexPath:indexPath animated:NO];
     }
   }
 }
 
 - (void)nodeHighlightedStateDidChange:(ASCellNode *)node
 {
-  NSIndexPath *indexPath = [self indexPathForNode:node];
+  NSIndexPath *indexPath = [_dataController completedIndexPathForNode:node];
   if (indexPath) {
     [self cellForItemAtIndexPath:indexPath].highlighted = node.isHighlighted;
   }
@@ -1253,12 +1253,12 @@ static NSString * const kCellReuseIdentifier = @"_ASCollectionViewCell";
     return;
   }
   
-  NSIndexPath *indexPath = [self indexPathForNode:node];
-  if (indexPath == nil) {
+  NSIndexPath *uikitIndexPath = [_dataController completedIndexPathForNode:node];
+  if (uikitIndexPath == nil) {
     return;
   }
 
-  [_layoutFacilitator collectionViewWillEditCellsAtIndexPaths:@[ indexPath ] batched:NO];
+  [_layoutFacilitator collectionViewWillEditCellsAtIndexPaths:@[ uikitIndexPath ] batched:NO];
   
   ASCollectionViewInvalidationStyle invalidationStyle = _nextLayoutInvalidationStyle;
   if (invalidationStyle == ASCollectionViewInvalidationStyleNone) {

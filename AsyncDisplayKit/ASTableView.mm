@@ -1230,7 +1230,7 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
 
 - (void)nodeSelectedStateDidChange:(ASCellNode *)node
 {
-  NSIndexPath *indexPath = [self indexPathForNode:node];
+  NSIndexPath *indexPath = [_dataController completedIndexPathForNode:node];
   if (indexPath) {
     if (node.isSelected) {
       [self selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -1242,7 +1242,7 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
 
 - (void)nodeHighlightedStateDidChange:(ASCellNode *)node
 {
-  NSIndexPath *indexPath = [self indexPathForNode:node];
+  NSIndexPath *indexPath = [_dataController completedIndexPathForNode:node];
   if (indexPath) {
     [self cellForRowAtIndexPath:indexPath].highlighted = node.isHighlighted;
   }

@@ -136,6 +136,7 @@
     self.collectionView.asyncDataSource = self.asyncDelegate;
     self.collectionView.asyncDelegate = self.asyncDelegate;
     
+    [self.collectionView registerSupplementaryNodeOfKind:UICollectionElementKindSectionHeader];
     [self.view addSubview:self.collectionView];
   }
   return self;
@@ -297,7 +298,6 @@
   ASCollectionViewTestController *testController = [[ASCollectionViewTestController alloc] initWithNibName:nil bundle:nil];\
   __unused ASCollectionViewTestDelegate *del = testController.asyncDelegate;\
   __unused ASCollectionView *cv = testController.collectionView;\
-  [cv registerSupplementaryNodeOfKind:UICollectionElementKindSectionHeader];\
   UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];\
   [window makeKeyAndVisible]; \
   window.rootViewController = testController;\
