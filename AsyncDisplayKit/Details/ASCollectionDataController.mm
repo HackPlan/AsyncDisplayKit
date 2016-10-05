@@ -53,6 +53,7 @@
 
 - (void)prepareForReloadDataWithSectionCount:(NSInteger)newSectionCount
 {
+  ASDisplayNodeAssertMainThread();
   NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newSectionCount)];
   
   [_sections removeAllObjects];
@@ -97,6 +98,7 @@
 
 - (void)prepareForInsertSections:(NSIndexSet *)sections
 {
+  ASDisplayNodeAssertMainThread();
   [self _populatePendingSectionsFromDataSource:sections];
   
   for (NSString *kind in [self supplementaryKinds]) {
@@ -163,6 +165,7 @@
 
 - (void)prepareForInsertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+  ASDisplayNodeAssertMainThread();
   for (NSString *kind in [self supplementaryKinds]) {
     LOG(@"Populating elements of kind: %@, for index paths: %@", kind, indexPaths);
     NSMutableArray<ASIndexedNodeContext *> *contexts = [NSMutableArray array];
@@ -184,6 +187,7 @@
 
 - (void)prepareForDeleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+  ASDisplayNodeAssertMainThread();
   for (NSString *kind in [self supplementaryKinds]) {
     NSMutableArray<ASIndexedNodeContext *> *contexts = [NSMutableArray array];
     [self _populateSupplementaryNodesOfKind:kind atIndexPaths:indexPaths mutableContexts:contexts];
@@ -289,6 +293,7 @@
   if ([kind isEqualToString:ASDataControllerRowNodeKind]) {
     return [super constrainedSizeForNodeOfKind:kind atIndexPath:indexPath];
   } else {
+    ASDisplayNodeAssertMainThread();
     return [self.collectionDataSource dataController:self constrainedSizeForSupplementaryNodeOfKind:kind atIndexPath:indexPath];
   }
 }
