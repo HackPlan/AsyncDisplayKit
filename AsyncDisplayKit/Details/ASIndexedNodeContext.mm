@@ -48,9 +48,13 @@
   std::lock_guard<std::mutex> l(_lock);
   if (_nodeBlock != nil) {
     ASCellNode *node = _nodeBlock();
+    _nodeBlock = nil;
+    if (node == nil) {
+      ASDisplayNodeFailAssert(@"Node block returned nil node! Index path: %@", _indexPath);
+      node = [[ASCellNode alloc] init];
+    }
     ASEnvironmentStatePropagateDown(node, _environmentTraitCollection);
     _node = node;
-    _nodeBlock = nil;
   }
   return _node;
 }
