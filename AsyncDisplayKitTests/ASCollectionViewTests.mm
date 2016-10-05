@@ -48,7 +48,7 @@
 
 @end
 
-@interface ASCollectionViewTestDelegate : NSObject <ASCollectionViewDataSource, ASCollectionViewDelegate>
+@interface ASCollectionViewTestDelegate : NSObject <ASCollectionViewDataSource, ASCollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, assign) NSInteger sectionGeneration;
 
@@ -100,6 +100,16 @@
   context.sectionGeneration = _sectionGeneration;
   context.sectionIndex = section;
   return context;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+  return CGSizeMake(100, 100);
+}
+
+- (ASCellNode *)collectionView:(ASCollectionView *)collectionView nodeForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+  return [[ASCellNode alloc] init];
 }
 
 @end
@@ -287,6 +297,7 @@
   ASCollectionViewTestController *testController = [[ASCollectionViewTestController alloc] initWithNibName:nil bundle:nil];\
   __unused ASCollectionViewTestDelegate *del = testController.asyncDelegate;\
   __unused ASCollectionView *cv = testController.collectionView;\
+  [cv registerSupplementaryNodeOfKind:UICollectionElementKindSectionHeader];\
   UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];\
   [window makeKeyAndVisible]; \
   window.rootViewController = testController;\
@@ -602,6 +613,41 @@
   // the bug demonstrated by
   // ASUICollectionViewTests.testThatIssuingAnUpdateBeforeInitialReloadIsUnacceptable
   XCTAssertNoThrow([cv insertSections:[NSIndexSet indexSetWithIndex:0]]);
+}
+
+- (void)testThatNodeAtIndexPathIsCorrectImmediatelyAfterSubmittingUpdate
+{
+  updateValidationTestPrologue
+  NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+
+  // Insert an item and assert nodeForItemAtIndexPath: immediately returns new node
+  ASCellNode *oldNode = [cv nodeForItemAtIndexPath:indexPath];
+  XCTAssertNotNil(oldNode);
+  del->_itemCounts[0] += 1;
+  [cv insertItemsAtIndexPaths:@[ indexPath ]];
+  ASCellNode *newNode = [cv nodeForItemAtIndexPath:indexPath];
+  XCTAssertNotNil(newNode);
+  XCTAssertNotEqualObjects(oldNode, newNode);
+
+  // Delete all sections and assert nodeForItemAtIndexPath: immediately returns nil
+  NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, del->_itemCounts.size())];
+  del->_itemCounts.clear();
+  [cv deleteSections:sections];
+  XCTAssertNil([cv nodeForItemAtIndexPath:indexPath]);
+}
+
+- (void)testThatSupplementaryNodeAtIndexPathIsCorrectImmediatelyAfterSubmittingUpdate
+{
+  updateValidationTestPrologue
+  NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+  ASCellNode *oldHeader = [cv supplementaryNodeForElementKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
+  XCTAssertNotNil(oldHeader);
+
+  // Reload the section and ensure that the new header is loaded
+  [cv reloadSections:[NSIndexSet indexSetWithIndex:0]];
+  ASCellNode *newHeader = [cv supplementaryNodeForElementKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
+  XCTAssertNotNil(newHeader);
+  XCTAssertNotEqualObjects(oldHeader, newHeader);
 }
 
 @end
