@@ -301,8 +301,13 @@ NS_ASSUME_NONNULL_BEGIN
  * @param cellNode a cellNode part of the collection view
  *
  * @return an indexPath for this cellNode
+ *
+ * @discussion This method will return @c nil for a node that is still being
+ *   displayed in the collection view, if the data source has deleted the item.
+ *   That is, the node is visible but it no longer corresponds
+ *   to any item in the data source and will be removed soon.
  */
-- (NSIndexPath *)indexPathForNode:(ASCellNode *)cellNode;
+- (nullable NSIndexPath *)indexPathForNode:(ASCellNode *)cellNode;
 
 /**
  * Similar to -visibleCells.
