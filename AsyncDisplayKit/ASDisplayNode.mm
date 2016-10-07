@@ -26,7 +26,7 @@
 #import "ASLayoutSpec.h"
 #import "ASCellNode.h"
 
-@interface ASDisplayNode () <UIGestureRecognizerDelegate>
+@interface ASDisplayNode () <UIGestureRecognizerDelegate, CALayerDelegate>
 
 /**
  *
